@@ -1,7 +1,8 @@
 from flask import Blueprint
 from flask_restx import Api
 
-from api.auth import api as auth
+from web.api.auth import api as auth
+from web.api.wechat import api as wechat
 
 blueprint = Blueprint('rest api',
                       __name__,
@@ -19,6 +20,7 @@ api = Api(
 )
 
 api.add_namespace(auth, path='/auth')
+api.add_namespace(wechat, path='/wechat')
 
 
 def init_restapi(app):

@@ -1,10 +1,10 @@
 from flask import Flask, render_template, redirect
 # from flask_cors import CORS
-from extension.websocket import init_websocket
-from extension.auth import init_auth
-from extension.restapi import init_restapi
-from extension.mongodb import init_mongodb
-
+# from web.extension.websocket import init_websocket
+from web.extension.auth import init_auth
+from web.extension.restapi import init_restapi
+from db.mongodb import init_mongodb
+from chat import init_websocket
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'

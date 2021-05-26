@@ -4,15 +4,33 @@ from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.exceptions import BadRequest, Unauthorized
 from marshmallow import ValidationError
 
-from lib.utils import construct_login_info
-from schema.auth import AccountLoginSchema
-from extension.auth import User
+from web.schema.utils import construct_login_info
+from web.schema.auth import RegisterSchema, LoginSchema
+from web.extension.auth import User
 
-api = Namespace('user: login', description='用户登录')
+api = Namespace('auth', description='权限验证')
 
 
-@api.route('/account_login')
-class AccountLogin(Resource):
+@api.route('/register')
+class Login(Resource):
+    """用户注册"""
+    @api.response(200, '登录成功返回用户信息')
+    @api.response(400, '参数错误提示')
+    def post(self):
+        req_data = request.json or {}
+        try:
+            RegisterSchema().load(req_data)
+        except ValidationError as err:
+            api.logger.error(str(err.messages))
+            raise BadRequest(err.messages)
+        except Unauthorized as err:
+            api.logger.error(str(err))
+            raise
+        return {'data': {'msg': '注册成功'}}
+
+
+@api.route('/login')
+class Login(Resource):
     @api.response(200, '已登录返回用户信息')
     @api.response(401, '未登录操作提示')
     def get(self):
@@ -27,11 +45,12 @@ class AccountLogin(Resource):
         return {'data': res_data}
 
     @api.response(200, '登录成功返回用户信息')
-    @api.response(401, '未登录操作提示')
+    @api.response(400, '参数错误提示')
+    @api.response(401, '登录信息错误提示')
     def post(self):
         req_data = request.json or {}
         try:
-            user = User(AccountLoginSchema().load(req_data))
+            user = User(LoginSchema().load(req_data))
             login_user(user)
             res_data = {'msg': '登录成功', 'user': construct_login_info(user)}
         except ValidationError as err:

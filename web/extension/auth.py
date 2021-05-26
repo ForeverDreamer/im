@@ -2,10 +2,10 @@ import functools
 
 # from flask import current_app
 from flask_login import UserMixin, LoginManager, current_user
-from flask_socketio import disconnect, emit
+from flask_socketio import disconnect
 
 # from lib.message import send_error_message
-from dao.user import users
+from db.user import db_find_user
 
 
 def authenticated_only(f):
@@ -38,11 +38,11 @@ class User(UserMixin):
     #     return check_password_hash(self._info.get('password'), password)
 
     def get_id(self):
-        return self._info['username']
+        return self._info['_id']
 
     @staticmethod
     def find_one(u_id):
-        user = users.get(u_id)
+        user = db_find_user({'_id': u_id})
         if user:
             return User(user)
         else:
