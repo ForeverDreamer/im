@@ -1,11 +1,9 @@
-
 from flask import session
 from marshmallow import Schema, fields, validate, validates, validates_schema, ValidationError, post_load
 import requests as http
 from werkzeug.exceptions import Unauthorized
 
 from constant.auth import LOGIN_TYPE
-from web.lib.misc import generate_random_id
 from db.auth import db_get_wechat_credentials
 from db.user import db_find_user, db_create_user
 
@@ -20,14 +18,7 @@ class RegisterSchema(Schema):
         user = db_find_user({'username': data['username']})
         if user:
             raise ValidationError('用户名已存在')
-        db_create_user(
-            {
-                '_id': generate_random_id(),
-                'nickname': data['nickname'],
-                'username': data['username'],
-                'password': data['password']
-            }
-        )
+        return db_create_user(data)
 
 
 class AccountLoginSchema(Schema):

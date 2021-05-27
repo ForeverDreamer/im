@@ -19,14 +19,14 @@ class Login(Resource):
     def post(self):
         req_data = request.json or {}
         try:
-            RegisterSchema().load(req_data)
+            user = RegisterSchema().load(req_data)
         except ValidationError as err:
             api.logger.error(str(err.messages))
             raise BadRequest(err.messages)
         except Unauthorized as err:
             api.logger.error(str(err))
             raise
-        return {'data': {'msg': '注册成功'}}
+        return {'data': {'msg': '注册成功', 'user': user}}
 
 
 @api.route('/login')
@@ -38,7 +38,7 @@ class Login(Resource):
         if current_user.is_authenticated:
             res_data = {
                 'msg': '用户已登录',
-                'user': construct_login_info(current_user),
+                'user': construct_login_info(current_user.info),
             }
         else:
             raise Unauthorized('用户未登录')
@@ -52,7 +52,7 @@ class Login(Resource):
         try:
             user = User(LoginSchema().load(req_data))
             login_user(user)
-            res_data = {'msg': '登录成功', 'user': construct_login_info(user)}
+            res_data = {'msg': '登录成功', 'user': construct_login_info(user.info)}
         except ValidationError as err:
             api.logger.error(str(err.messages))
             raise BadRequest(err.messages)

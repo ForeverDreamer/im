@@ -6,7 +6,7 @@ from flask_socketio import SocketIO, join_room, leave_room
 
 from chat.message import send_message_to_room, broadcast_message
 from web.extension.auth import authenticated_only
-from chat.user import chat_online, chat_enter_room, chat_leave_room
+from chat.user import chat_online, chat_offline, chat_enter_room, chat_leave_room
 
 
 ns_events = '/events'
@@ -37,21 +37,19 @@ def register_events(si):
     @authenticated_only
     def on_connect():
         # pp(current_user.info)
+        for r_id in current_user.info['rooms']:
+            join_room(r_id)
         chat_online(current_user.info, request.sid)
 
     @si.on('disconnect', namespace=ns_events)
+    @authenticated_only
     def on_disconnect():
-        print(f'{request.sid}断开连接')
+        chat_offline(current_user.info, request.sid)
 
     # @si.on_error('/events')  # handles the '/events' namespace
     # def error_handler_chat(e):
     #     traceback.print_tb(e.__traceback__)
     #     raise
-
-
-def init_enter_rooms():
-    # 遍历每个用户的rooms，依次调用join_room(r_id)
-    pass
 
 
 def init_websocket(app):
@@ -62,5 +60,4 @@ def init_websocket(app):
         serveClient=False
     )
     register_events(socketio)
-    init_enter_rooms()
     return socketio

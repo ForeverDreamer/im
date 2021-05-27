@@ -3,6 +3,7 @@ from flask_restx import Api
 
 from web.api.auth import api as auth
 from web.api.wechat import api as wechat
+from web.api.room import api as room
 
 blueprint = Blueprint('rest api',
                       __name__,
@@ -21,6 +22,7 @@ api = Api(
 
 api.add_namespace(auth, path='/auth')
 api.add_namespace(wechat, path='/wechat')
+api.add_namespace(room, path='/room')
 
 
 def init_restapi(app):

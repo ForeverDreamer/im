@@ -1,6 +1,7 @@
 from db.mongodb import mongo
 from web.lib.timezone import utc_time
-from constant.user import TYPE, ROLES, STATUS
+from web.lib.misc import generate_random_id
+from constant.user import USER_TYPE, USER_ROLES, USER_STATUS
 
 col_name = 'user'
 query = {'active': True}
@@ -17,18 +18,20 @@ def db_find_user(q, p=None, many=False):
 def db_create_user(user):
     t = utc_time()
     extra_info = {
+        '_id': generate_random_id(),
         'created_at': t,
         'updated_at': t,
-        'type': TYPE[0],
+        'type': USER_TYPE[0],
         'active': True,
-        'status': STATUS[1],
+        'status': USER_STATUS[1],
         'last_login': None,
-        'roles': [ROLES[1]],
+        'roles': [USER_ROLES[1]],
         'rooms': [],
         'self_room': None,
     }
     user.update(extra_info)
     mongo.db[col_name].insert_one(user)
+    return db_find_user({'username': user['username']})
 
 
 def db_update_user(q, u):
