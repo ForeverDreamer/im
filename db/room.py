@@ -8,14 +8,6 @@ col_name = 'room'
 query = {'active': True}
 
 
-def db_find_room(q, p=None, many=False):
-    q.update(query)
-    if many:
-        return mongo.db[col_name].find(q, p)
-    else:
-        return mongo.db[col_name].find_one(q, p)
-
-
 def db_create_room(room):
     t = utc_time()
     user = current_user.info
@@ -36,3 +28,11 @@ def db_create_room(room):
     room.update(extra_info)
     mongo.db[col_name].insert_one(room)
     return db_find_room({'name': room['name']})
+
+
+def db_find_room(q, p=None, many=False):
+    q.update(query)
+    if many:
+        return mongo.db[col_name].find(q, p)
+    else:
+        return mongo.db[col_name].find_one(q, p)

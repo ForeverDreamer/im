@@ -7,12 +7,13 @@ from marshmallow import ValidationError
 from web.schema.utils import construct_login_info
 from web.schema.auth import RegisterSchema, LoginSchema
 from web.extension.auth import User
+from web.api.utils import get_rooms_by_owner
 
 api = Namespace('auth', description='权限验证')
 
 
 @api.route('/register')
-class Login(Resource):
+class Register(Resource):
     """用户注册"""
     @api.response(200, '登录成功返回用户信息')
     @api.response(400, '参数错误提示')
@@ -39,6 +40,8 @@ class Login(Resource):
             res_data = {
                 'msg': '用户已登录',
                 'user': construct_login_info(current_user.info),
+                'rooms': get_rooms_by_owner(current_user.info['username']),
+                'current_r_id': 'room1',
             }
         else:
             raise Unauthorized('用户未登录')
@@ -52,7 +55,7 @@ class Login(Resource):
         try:
             user = User(LoginSchema().load(req_data))
             login_user(user)
-            res_data = {'msg': '登录成功', 'user': construct_login_info(user.info)}
+            res_data = {'msg': '登录成功'}
         except ValidationError as err:
             api.logger.error(str(err.messages))
             raise BadRequest(err.messages)

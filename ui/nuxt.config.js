@@ -23,7 +23,7 @@ export default {
   css: ['element-ui/lib/theme-chalk/index.css'],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: ['@/plugins/element-ui', '@/plugins/init', '@/plugins/network'],
+  plugins: ['~/plugins/element-ui', '~/plugins/init', '~/plugins/network'],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -39,13 +39,38 @@ export default {
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
     'bootstrap-vue/nuxt',
+    // 请求代理配置，解决跨域
+    '@gauseen/nuxt-proxy',
   ],
 
+  proxyTable: {
+    '/backend': {
+      // 请求服务器地址
+      // target: 'http://localhost:5000/dm',
+      // target: 'http://localhost:5001/ds',
+      // target: 'http://192.168.71.20:7090/dm',
+      // target: 'http://192.168.71.20:7090/ds',
+      target: 'http://127.0.0.1:5000',
+      // target: 'http://zlbxxcj.bjceis.com',
+      // target: 'https://api.weixin.qq.com',
+      ws: true,
+      changeOrigin: true,
+      pathRewrite: {
+        '^/backend': '',
+      },
+    },
+  },
+
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
-  axios: {},
+  axios: {
+    // baseURL: process.env.BASE_URL || 'http://zlbxxcj.bjceis.com',
+    // baseURL: process.env.BASE_URL || 'http://127.0.0.1:5000',
+    baseURL: process.env.BASE_URL || '/backend',
+  },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     transpile: [/^element-ui/],
+    publicPath: '/static/client/',
   },
 }

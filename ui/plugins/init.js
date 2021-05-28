@@ -1,5 +1,6 @@
 import Vue from 'vue'
 
-import conf from '@/lib/config'
+import '~/lib/filter'
+import conf from '~/lib/config'
 
 Vue.prototype.$conf = conf

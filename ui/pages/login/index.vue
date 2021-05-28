@@ -3,7 +3,7 @@
     <el-form ref="loginForm" :model="loginForm" :rules="rules">
       <el-form-item prop="userName">
         <el-input
-          v-model="loginForm.userName"
+          v-model="loginForm.username"
           size="medium"
           placeholder="请输入用户名"
         >
@@ -46,10 +46,10 @@ export default {
         password: '',
       },
       rules: {
-        userName: [
+        username: [
           { required: true, message: '请输入用户名', trigger: 'blur' },
           {
-            min: 4,
+            min: 1,
             max: 15,
             message: '长度在 4 到 10 个字符',
             trigger: 'blur',
@@ -58,7 +58,7 @@ export default {
         password: [
           { required: true, message: '请输入密码', trigger: 'blur' },
           {
-            min: 8,
+            min: 6,
             max: 15,
             message: '长度在 8 到 15 个字符',
             trigger: 'blur',
