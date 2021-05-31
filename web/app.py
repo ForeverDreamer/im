@@ -5,14 +5,10 @@ from web.extension.auth import init_auth
 from web.extension.restapi import init_restapi
 from db.mongodb import init_mongodb
 from chat import init_websocket
+from web.config import conf
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'secret!'
-# import urllib
-# user = urllib.parse.quote_plus('root')
-# password = urllib.parse.quote_plus('Root@1234.')
-# print(user, password)
-app.config['MONGO_URI'] = 'mongodb://root:Root%401234.@192.168.71.20:7091/im?authSource=admin'
+app.config.from_mapping(conf['dev'])
 # CORS(app)
 
 

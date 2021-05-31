@@ -1,34 +1,36 @@
 <template>
-  <div class="login-container">
-    <el-form ref="loginForm" :model="loginForm" :rules="rules">
-      <el-form-item prop="userName">
-        <el-input
-          v-model="loginForm.username"
-          size="medium"
-          placeholder="请输入用户名"
-        >
-        </el-input>
-      </el-form-item>
-      <el-form-item prop="password">
-        <el-input
-          v-model="loginForm.password"
-          type="password"
-          size="medium"
-          placeholder="请输入密码"
-        >
-        </el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button
-          type="primary"
-          size="medium"
-          :loading="loading"
-          @click.prevent="login()"
-        >
-          {{ loading ? '登录中...' : '立即登录' }}
-        </el-button>
-      </el-form-item>
-    </el-form>
+  <div class="login-background">
+    <div class="login-container">
+      <el-form ref="loginForm" :model="loginForm" :rules="rules">
+        <el-form-item prop="userName">
+          <el-input
+            v-model="loginForm.username"
+            size="medium"
+            placeholder="请输入用户名"
+          >
+          </el-input>
+        </el-form-item>
+        <el-form-item prop="password">
+          <el-input
+            v-model="loginForm.password"
+            type="password"
+            size="medium"
+            placeholder="请输入密码"
+          >
+          </el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button
+            type="primary"
+            size="medium"
+            :loading="loading"
+            @click.prevent="login()"
+          >
+            {{ loading ? '登录中...' : '立即登录' }}
+          </el-button>
+        </el-form-item>
+      </el-form>
+    </div>
   </div>
 </template>
 
@@ -98,6 +100,15 @@ export default {
 </script>
 
 <style scoped>
+.login-background {
+  background-image: url('../../assets/钢铁侠.jpg');
+  background-size: 100% 100%;
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  z-index: -1;
+}
+
 .login-container {
   background-color: #e9eef3;
   color: #333;

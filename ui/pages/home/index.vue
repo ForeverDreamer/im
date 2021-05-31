@@ -6,8 +6,9 @@
           v-for="(item, index) in rooms"
           :key="index"
           :index="index | numToString"
+          class="d-flex justify-content-between room-tab"
         >
-          <!--          <i :class="item.icon"></i>-->
+          <el-image class="room-avatar" :src="item.avatar"></el-image>
           <span slot="title">{{ item.name }}</span>
         </el-menu-item>
         <!--<li v-for="i in 100" :key="i">{{ i }}</li>-->
@@ -88,5 +89,14 @@ export default {
 
 .el-container:nth-child(7) .el-aside {
   line-height: 320px;
+}
+
+.room-avatar {
+  height: 56px;
+  width: 56px;
+}
+
+.room-tab {
+  margin-bottom: 10px;
 }
 </style>
