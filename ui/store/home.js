@@ -11,8 +11,14 @@ export const getters = {
   rooms(state) {
     return state.rooms
   },
+  currentRoomId(state) {
+    return state.currentRoomId
+  },
   currentRoom(state) {
-    return state.rooms[state.currentRoomId]
+    return state.rooms.find((room) => room.r_id === state.currentRoomId)
+  },
+  activeRoomIdx(state) {
+    return state.rooms.findIndex((room) => room.r_id === state.currentRoomId)
   },
 }
 

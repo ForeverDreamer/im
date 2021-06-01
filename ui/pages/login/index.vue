@@ -1,7 +1,13 @@
 <template>
-  <div class="login-background">
-    <div class="login-container">
-      <el-form ref="loginForm" :model="loginForm" :rules="rules">
+  <div>
+    <div class="login-background"></div>
+    <div>
+      <el-form
+        ref="loginForm"
+        class="login-container"
+        :model="loginForm"
+        :rules="rules"
+      >
         <el-form-item prop="userName">
           <el-input
             v-model="loginForm.username"
@@ -110,7 +116,7 @@ export default {
 }
 
 .login-container {
-  background-color: #e9eef3;
+  background-color: #000000;
   color: #333;
   text-align: center;
   line-height: 1;

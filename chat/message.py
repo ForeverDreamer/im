@@ -6,8 +6,8 @@ def read_receipt_cb():
     print('message was received!')
 
 
-def send_message_to_room(data, r_id, cb=read_receipt_cb):
-    emit('data', data, to=r_id, callback=cb)
+def send_message_to_room(data, cb=read_receipt_cb):
+    emit('data', data, to=data['r_id'], callback=cb)
 
 
 def broadcast_message(data):

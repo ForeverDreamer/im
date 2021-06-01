@@ -13,25 +13,25 @@ ns_events = '/events'
 
 
 def register_events(si):
-    @si.on('data', namespace=ns_events)
+    @si.on('msg', namespace=ns_events)
     def on_data(data):
         r_id = data['r_id']
         msg = data['msg']
-        send_message_to_room({'r_id': r_id, 'msg': f'{current_user.info["nickname"]}说: {msg}'}, r_id)
+        send_message_to_room({'r_id': r_id, 'msg': f'{current_user.info["nickname"]}说: {msg}'})
 
     @si.on('enter_room', namespace=ns_events)
     def on_enter_room(data):
         r_id = data['r_id']
         join_room(r_id)
         chat_enter_room(current_user.info["_id"], r_id)
-        send_message_to_room({'r_id': r_id, 'msg': f'{current_user.info["nickname"]}进入了房间'}, r_id)
+        send_message_to_room({'r_id': r_id, 'msg': f'{current_user.info["nickname"]}进入了房间'})
 
     @si.on('leave_room', namespace=ns_events)
     def on_leave_room(data):
         r_id = data['r_id']
         leave_room(r_id)
         chat_leave_room(current_user.info["_id"], r_id)
-        send_message_to_room({'r_id': r_id, 'msg': f'{current_user.info["nickname"]}离开了房间'}, r_id)
+        send_message_to_room({'r_id': r_id, 'msg': f'{current_user.info["nickname"]}离开了房间'})
 
     @si.on('connect', namespace=ns_events)
     @authenticated_only
