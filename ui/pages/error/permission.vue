@@ -8,7 +8,7 @@ export default {
   layout: 'login',
   created() {
     setTimeout(() => {
-      this.$router.push('/login/')
+      this.$router.push('/home/')
     }, 3000)
   },
 }

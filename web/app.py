@@ -12,14 +12,14 @@ app.config.from_mapping(conf['dev'])
 # CORS(app)
 
 
-@app.route('/im')
+@app.route('/home')
 def im():
     return render_template('client/index.html')
 
 
 @app.route('/')
 def index():
-    return redirect('/im')
+    return redirect('/home')
 
 
 if __name__ == '__main__':

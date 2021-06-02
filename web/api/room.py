@@ -1,12 +1,10 @@
 from flask import request
 from flask_restx import Namespace, Resource
-from flask_login import login_user, logout_user, current_user, login_required
-from werkzeug.exceptions import BadRequest, Unauthorized
+from flask_login import login_required
+from werkzeug.exceptions import BadRequest
 from marshmallow import ValidationError
 
-from web.schema.utils import construct_login_info
 from web.schema.room import CreateRoomSchema, QueryRoomSchema
-from web.extension.auth import User
 
 api = Namespace('auth', description='权限验证')
 

@@ -26,6 +26,9 @@ export const mutations = {
   init(state, data) {
     state.user = data.user
     state.rooms = data.rooms
+    // state.rooms.forEach((room) => {
+    //   room.msgToSend = ''
+    // })
     state.currentRoomId = data.current_r_id
     console.log(state)
   },
@@ -36,7 +39,7 @@ export const mutations = {
     Object.assign(state.rooms[room.r_id], room)
   },
   updateCurrentRoomId(state, currentRoomId) {
-    Object.assign(state.currentRoomId, currentRoomId)
+    state.currentRoomId = currentRoomId
   },
   clear(state) {
     state.user = null

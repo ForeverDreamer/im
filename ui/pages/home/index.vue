@@ -1,43 +1,61 @@
 <template>
   <el-container>
-    <el-aside width="300px">
-      <el-menu :default-active="activeRoomIdx | numToString" @select="openRoom">
-        <el-menu-item
+    <el-aside width="400px">
+      <el-menu
+        :default-active="activeRoomIdx | numToString"
+        @select="enterRoom"
+      >
+        <div
           v-for="(item, index) in rooms"
           :key="index"
-          :index="index | numToString"
-          class="d-flex justify-content-between room-tab"
+          class="d-flex justify-content-between align-items-center"
         >
-          <el-image class="room-avatar" :src="item.avatar"></el-image>
-          <span slot="title">{{ item.name }}（{{ item.description }}）</span>
-        </el-menu-item>
-        <!--<li v-for="i in 100" :key="i">{{ i }}</li>-->
+          <el-menu-item
+            :index="index | numToString"
+            class="d-flex justify-content-between room-tab"
+          >
+            <div>
+              <el-image class="room-avatar" :src="item.avatar"></el-image>
+              <span slot="title"
+                >{{ item.name }}（{{ item.description }}）</span
+              >
+            </div>
+          </el-menu-item>
+          <el-dropdown @command="handleCommand">
+            <span class="el-dropdown-link">
+              更多<i class="el-icon-arrow-down el-icon--right"></i>
+            </span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item command="leave">离开</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
       </el-menu>
     </el-aside>
     <el-main>
-      <div class="room-window">
-        <div class="room-window_msgs">消息列表</div>
-        <div class="room-window_input">
-          <el-input
-            v-model="msgToSend"
-            placeholder="要发送的消息"
-            size="medium"
-            class="w-50"
-          />
-          <el-button type="primary" @click="sendMsg(msgToSend)">
-            发送消息
-          </el-button>
-        </div>
-      </div>
+      <room-dialog
+        ref="roomDialog"
+        :socket="socket"
+        :r-id="currentRoomId"
+      ></room-dialog>
     </el-main>
   </el-container>
 </template>
 
 <script>
 import { mapGetters, mapMutations, mapActions } from 'vuex'
+import RoomDialog from '~/components/room/Dialog'
 
 export default {
   name: 'Index',
+  components: {
+    RoomDialog,
+  },
+  data() {
+    return {
+      socket: null,
+    }
+  },
   computed: {
     // mix the getters into computed with object spread operator
     ...mapGetters({
@@ -47,13 +65,14 @@ export default {
       currentRoom: 'home/currentRoom',
       activeRoomIdx: 'home/activeRoomIdx',
     }),
-    msgToSend() {
-      return this.currentRoom ? this.currentRoom.msgToSend : ''
-    },
+    // msgToSend() {
+    //   return this.currentRoom ? this.currentRoom.msgToSend : ''
+    // },
   },
   created() {
-    this.initStore(`${this.$conf.apiVersion}/auth/login`)
-    this.initChat()
+    this.initStore(`${this.$conf.apiVersion}/auth/login`).then(() => {
+      this.initChat()
+    })
   },
   methods: {
     ...mapMutations({
@@ -65,6 +84,16 @@ export default {
     ...mapActions({
       initStore: 'home/initStore',
     }),
+    handleCommand(cmd) {
+      switch (cmd) {
+        case 'leave':
+          this.leaveRoom(this.currentRoomId)
+          break
+      }
+    },
+    handleClick(e) {
+      e.stopPropagation()
+    },
     initChat() {
       this.socket = this.$socketIo('http://127.0.0.1:5000/events', {
         // path: '/chat/',
@@ -77,37 +106,31 @@ export default {
       })
       // const callback = () => console.log('消息收到')
       this.socket.on('msg', (data, callback) => {
-        console.log(data)
+        console.log('收到消息：' + data)
         // this.rooms[data.r_id].msgs.push(data)
         // console.log(this.rooms)
         if (callback) {
           callback()
         }
       })
+      this.socket.on('enter_room', () => {
+        console.log('socket enter_room')
+        this.$refs.roomDialog.fetchRoomMessages()
+      })
       this.socket.on('error', (err) => {
         console.log(err.code)
         console.log(err.msg)
       })
     },
-    sendMsg(msg) {
-      console.log(msg)
-      if (!this.msgToSend) {
-        return
-      }
-      this.socket.emit('msg', {
-        r_id: this.rId,
-        msg: this.msgToSend,
-      })
-    },
-    enterRoom(rId) {
-      console.log(rId)
+    enterRoom(key, keyPath) {
+      console.log(key, keyPath)
       this.socket.emit('enter_room', {
-        r_id: rId,
+        r_id: this.rooms[key].r_id,
       })
-      console.log(`${this.user.nickname}进入房间：${rId}`)
+      this.updateCurrentRoomId(this.rooms[key].r_id)
+      console.log(`${this.user.nickname}进入房间：${this.rooms[key].name}`)
     },
     leaveRoom(rId) {
-      console.log(rId)
       this.socket.emit('leave_room', {
         r_id: rId,
       })
@@ -166,33 +189,14 @@ export default {
 
 .room-tab {
   /*background: #00b7ff;*/
-  margin-bottom: 10px;
+  /*margin-bottom: 10px;*/
 }
 
-.room-window {
-  position: absolute;
-  border: 1px solid black;
-  height: 100%;
-  width: 100%;
-  display: flex;
-  flex-flow: column nowrap;
-  justify-content: space-between;
-  align-items: center;
+.el-dropdown-link {
+  cursor: pointer;
+  color: #409eff;
 }
-
-.room-window_msgs {
-  border: 1px solid black;
-  width: 100%;
-  height: calc(100% - 60px);
-}
-
-.room-window_input {
-  border: 1px solid black;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 90%;
-  margin-bottom: 10px;
-  padding: 10px;
+.el-icon-arrow-down {
+  font-size: 12px;
 }
 </style>
