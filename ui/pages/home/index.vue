@@ -95,7 +95,7 @@ export default {
       e.stopPropagation()
     },
     initChat() {
-      this.socket = this.$socketIo('http://127.0.0.1:5000/events', {
+      this.socket = this.$socketIo(this.$conf.socketIoUrl, {
         // path: '/chat/',
       })
       this.socket.on('connect', () => {
@@ -107,8 +107,7 @@ export default {
       // const callback = () => console.log('消息收到')
       this.socket.on('msg', (data, callback) => {
         console.log('收到消息：' + data)
-        // this.rooms[data.r_id].msgs.push(data)
-        // console.log(this.rooms)
+        this.$refs.roomDialog.fetchRoomMessages()
         if (callback) {
           callback()
         }

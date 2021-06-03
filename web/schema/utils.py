@@ -8,6 +8,7 @@ def format_user_info(user):
         'u_id': user['_id'],
         'nickname': user['nickname'],
         'username': user['username'],
+        'avatar': f'{current_app.config["COS_DOMAIN"]}/asset/room/1.jpg',
         'created_at': str_local_time_without_timezone(user['created_at']),
         'last_login': user['last_login'],
         'rooms': user['rooms'],

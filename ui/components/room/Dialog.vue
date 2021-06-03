@@ -1,7 +1,14 @@
 <template>
-  <div class="room-dialog">
-    <div class="room-dialog_msgs">{{ formatedMsgs }}</div>
-    <div class="room-dialog_input">
+  <div class="dialog">
+    <div class="dialog-msgs">
+      <message
+        v-for="(msg, index) in msgs"
+        :key="index"
+        :msg="msg"
+        class="d-flex justify-content-between align-items-center"
+      />
+    </div>
+    <div class="dialog-input">
       <el-input
         v-model="msgToSend"
         placeholder="要发送的消息"
@@ -16,8 +23,12 @@
 </template>
 
 <script>
+import Message from '~/components/room/Message'
 export default {
   name: 'Dialog',
+  components: {
+    Message,
+  },
   props: {
     socket: {
       type: Object,
@@ -93,7 +104,7 @@ export default {
 </script>
 
 <style scoped>
-.room-dialog {
+.dialog {
   position: absolute;
   border: 1px solid black;
   height: 100%;
@@ -104,13 +115,13 @@ export default {
   align-items: center;
 }
 
-.room-dialog_msgs {
+.dialog-msgs {
   border: 1px solid black;
   width: 100%;
   height: calc(100% - 60px);
 }
 
-.room-dialog_input {
+.dialog-input {
   border: 1px solid #9a9999;
   display: flex;
   justify-content: space-between;

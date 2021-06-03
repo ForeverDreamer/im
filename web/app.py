@@ -23,6 +23,8 @@ def index():
 
 
 if __name__ == '__main__':
+    import sys
+    sys.path.append('/data/im')
     init_restapi(app)
     init_auth(app)
     init_mongodb(app)

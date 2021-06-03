@@ -1,5 +1,5 @@
 <template>
-  <h1>用户名或密码错误</h1>
+  <div></div>
 </template>
 
 <script>
@@ -7,6 +7,7 @@ export default {
   name: 'Auth',
   layout: 'login',
   created() {
+    this.$message.error('请登录后操作')
     setTimeout(() => {
       this.$router.push('/login/')
     }, 3000)
