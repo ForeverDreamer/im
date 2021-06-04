@@ -74,14 +74,21 @@ export default {
   },
   methods: {
     sendMsg(msg) {
-      console.log('发送消息：' + msg)
       if (!this.msgToSend) {
         return
       }
+      console.log('发送用户消息：' + msg)
       this.socket.emit('msg', {
         r_id: this.rId,
         msg: this.msgToSend,
       })
+      if (this.msgToSend.startsWith('@bot ')) {
+        console.log('发送bot消息：' + msg)
+        this.socket.emit('msg_bot', {
+          r_id: this.rId,
+          msg: this.msgToSend,
+        })
+      }
       this.msgToSend = ''
       this.fetchRoomMessages()
     },

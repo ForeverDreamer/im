@@ -10,7 +10,7 @@ api = Namespace('auth', description='权限验证')
 
 
 @api.route('/')
-class Login(Resource):
+class Room(Resource):
     """查询房间"""
     @api.response(200, '返回单个或多个房间详情',)
     @api.response(400, '请求参数错误详细信息')

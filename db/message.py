@@ -14,11 +14,16 @@ def db_new_message(msg):
         'type': '',
         'created_at': t,
         'updated_at': t,
-        'user': {
+        # 'user': {
+        #     'u_id': current_user.info['_id'],
+        #     'username': current_user.info['username'],
+        # }
+    }
+    if msg.get('user') is None:
+        msg['user'] = {
             'u_id': current_user.info['_id'],
             'username': current_user.info['username'],
         }
-    }
     msg.update(extra_info)
     mongo.db[col_name].insert_one(msg)
 
