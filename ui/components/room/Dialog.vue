@@ -1,12 +1,7 @@
 <template>
   <div class="dialog">
     <div class="dialog-msgs">
-      <message
-        v-for="(msg, index) in msgs"
-        :key="index"
-        :msg="msg"
-        class="d-flex justify-content-between align-items-center"
-      />
+      <message v-for="(msg, index) in msgs" :key="index" :msg="msg" />
     </div>
     <div class="dialog-input">
       <el-input
@@ -126,6 +121,7 @@ export default {
   border: 1px solid black;
   width: 100%;
   height: calc(100% - 60px);
+  margin-bottom: 10px;
 }
 
 .dialog-input {

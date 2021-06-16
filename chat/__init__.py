@@ -7,7 +7,9 @@ def init_websocket(app):
         app,
         cors_allowed_origins="*",
         # path='/chat/',
-        serveClient=False
+        serveClient=False,
+        logger=True,
+        engineio_logger=True,
     )
     register_events(socketio)
     return socketio

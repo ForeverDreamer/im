@@ -6,7 +6,7 @@
 export default {
   name: 'Index',
   beforeCreate() {
-    this.$router.push('/home/')
+    this.$router.push('/home')
   },
 }
 </script>

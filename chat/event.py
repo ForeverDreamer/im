@@ -4,10 +4,10 @@ from flask import request
 from flask_login import current_user
 from flask_socketio import SocketIO, join_room, leave_room
 
-from chat.message import send_message_to_room, bot_message_to_room
+from .message import send_message_to_room, bot_message_to_room
 from web.extension.auth import authenticated_only
-from chat.user import chat_online, chat_offline
-from chat.room import chat_enter_room, chat_leave_room
+from .user import chat_online, chat_offline
+from .room import chat_enter_room, chat_leave_room
 
 
 ns_events = '/events'
@@ -57,12 +57,12 @@ def register_events(socketio):
     #     raise
 
 
-def init_websocket(app):
-    socketio = SocketIO(
-        app,
-        cors_allowed_origins="*",
-        # path='/chat/',
-        serveClient=False
-    )
-    register_events(socketio)
-    return socketio
+# def init_websocket(app):
+#     socketio = SocketIO(
+#         app,
+#         cors_allowed_origins="*",
+#         # path='/chat/',
+#         serveClient=False
+#     )
+#     register_events(socketio)
+#     return socketio

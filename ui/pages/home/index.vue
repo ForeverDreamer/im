@@ -5,23 +5,12 @@
         :default-active="activeRoomIdx | numToString"
         @select="enterRoom"
       >
-        <div
-          v-for="(item, index) in rooms"
-          :key="index"
-          class="d-flex justify-content-between align-items-center"
-        >
-          <el-menu-item
-            :index="index | numToString"
-            class="d-flex justify-content-between room-tab"
-          >
-            <div>
-              <el-image class="room-avatar" :src="item.avatar"></el-image>
-              <span slot="title"
-                >{{ item.name }}（{{ item.description }}）</span
-              >
-            </div>
+        <div v-for="(item, index) in rooms" :key="index" class="room-tab">
+          <el-menu-item :index="index | numToString" class="room-tab__info">
+            <img class="room-avatar" :src="item.avatar" />
+            <span slot="title">{{ item.name }}（{{ item.description }}）</span>
           </el-menu-item>
-          <el-dropdown @command="handleCommand">
+          <el-dropdown class="room-tab__more" @command="handleCommand">
             <span class="el-dropdown-link">
               更多<i class="el-icon-arrow-down el-icon--right"></i>
             </span>
@@ -170,6 +159,7 @@ export default {
   bottom: 0;
   left: 0;
   right: 0;
+  padding-right: 10px;
 }
 
 .el-container:nth-child(5) .el-aside,
@@ -182,13 +172,27 @@ export default {
 }
 
 .room-avatar {
-  height: 56px;
-  width: 56px;
+  height: 46px;
+  width: 46px;
+  margin-right: 10px;
 }
 
 .room-tab {
-  /*background: #00b7ff;*/
-  /*margin-bottom: 10px;*/
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.room-tab__info {
+  /*background: #ff0000;*/
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.room-tab__more {
+  background: #37ff00;
 }
 
 .el-dropdown-link {

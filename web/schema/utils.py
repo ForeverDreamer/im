@@ -12,6 +12,7 @@ def format_user_info(user):
         'created_at': str_local_time_without_timezone(user['created_at']),
         'last_login': user['last_login'],
         'rooms': user['rooms'],
+        'current_r_id': user['current_r_id']
     }
 
 

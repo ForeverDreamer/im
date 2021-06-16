@@ -29,7 +29,7 @@ export const mutations = {
     // state.rooms.forEach((room) => {
     //   room.msgToSend = ''
     // })
-    state.currentRoomId = data.current_r_id
+    state.currentRoomId = data.user.current_r_id
     console.log(state)
   },
   updateUser(state, user) {

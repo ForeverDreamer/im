@@ -9,7 +9,7 @@ export default {
   created() {
     this.$message.error('没有操作权限')
     setTimeout(() => {
-      this.$router.push('/home/')
+      this.$router.push('/home')
     }, 3000)
   },
 }

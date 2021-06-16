@@ -9,7 +9,7 @@ export default {
   created() {
     this.$message.error('请登录后操作')
     setTimeout(() => {
-      this.$router.push('/login/')
+      this.$router.push('/login')
     }, 3000)
   },
 }

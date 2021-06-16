@@ -50,10 +50,10 @@ export default {
   /*margin-bottom: 10px;*/
 }
 .message-others {
-  justify-content: flex-start !important;
+  justify-content: flex-start;
 }
 .message-me {
-  justify-content: flex-end !important;
+  justify-content: flex-end;
 }
 .info {
   display: flex;

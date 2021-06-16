@@ -1,7 +1,7 @@
 import functools
 
 # from flask import current_app
-from flask_login import UserMixin, LoginManager, current_user
+from flask_login import UserMixin, LoginManager, current_user, login_required
 from flask_socketio import disconnect
 
 # from lib.message import send_error_message

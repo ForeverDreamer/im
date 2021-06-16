@@ -9,7 +9,7 @@ export default {
   created() {
     this.$message.error('服务器繁忙，请稍后再试')
     setTimeout(() => {
-      this.$router.push('/home/')
+      this.$router.push('/home')
     }, 3000)
   },
 }
