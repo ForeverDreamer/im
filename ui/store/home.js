@@ -30,6 +30,8 @@ export const mutations = {
     //   room.msgToSend = ''
     // })
     state.currentRoomId = data.user.current_r_id
+      ? data.user.current_r_id
+      : data.rooms[0].r_id
     console.log(state)
   },
   updateUser(state, user) {

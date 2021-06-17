@@ -51,4 +51,9 @@ html {
 /*.button--grey:hover {*/
 /*  color: #fff;*/
 /*}*/
+
+.icon {
+  cursor: pointer;
+  font-size: 32px;
+}
 </style>

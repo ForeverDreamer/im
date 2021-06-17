@@ -1,62 +1,29 @@
 <template>
   <el-container>
     <el-aside width="400px">
-      <el-menu
-        :default-active="activeRoomIdx | numToString"
-        @select="enterRoom"
-      >
-        <div v-for="(item, index) in rooms" :key="index" class="room-tab">
-          <el-menu-item :index="index | numToString" class="room-tab__info">
-            <img class="room-avatar" :src="item.avatar" />
-            <span slot="title">{{ item.name }}（{{ item.description }}）</span>
-          </el-menu-item>
-          <el-dropdown class="room-tab__more" @command="handleCommand">
-            <span class="el-dropdown-link">
-              更多<i class="el-icon-arrow-down el-icon--right"></i>
-            </span>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item command="leave">离开</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
-        </div>
-      </el-menu>
+      <aside-content :socket="socket" />
     </el-aside>
     <el-main>
-      <room-dialog
-        ref="roomDialog"
-        :socket="socket"
-        :r-id="currentRoomId"
-      ></room-dialog>
+      <MainContent ref="roomDialog" :socket="socket"></MainContent>
     </el-main>
   </el-container>
 </template>
 
 <script>
-import { mapGetters, mapMutations, mapActions } from 'vuex'
-import RoomDialog from '~/components/room/Dialog'
+import { mapMutations, mapActions } from 'vuex'
+import AsideContent from '~/components/AsideContent'
+import MainContent from '~/components/MainContent'
 
 export default {
   name: 'Index',
   components: {
-    RoomDialog,
+    AsideContent,
+    MainContent,
   },
   data() {
     return {
       socket: null,
     }
-  },
-  computed: {
-    // mix the getters into computed with object spread operator
-    ...mapGetters({
-      user: 'home/user',
-      rooms: 'home/rooms',
-      currentRoomId: 'home/currentRoomId',
-      currentRoom: 'home/currentRoom',
-      activeRoomIdx: 'home/activeRoomIdx',
-    }),
-    // msgToSend() {
-    //   return this.currentRoom ? this.currentRoom.msgToSend : ''
-    // },
   },
   created() {
     this.initStore(`${this.$conf.apiVersion}/auth/login`).then(() => {
@@ -67,22 +34,14 @@ export default {
     ...mapMutations({
       updateUser: 'home/updateUser',
       updateRoom: 'home/updateRoom',
-      updateCurrentRoomId: 'home/updateCurrentRoomId',
       clearStore: 'home/clear',
     }),
     ...mapActions({
       initStore: 'home/initStore',
     }),
-    handleCommand(cmd) {
-      switch (cmd) {
-        case 'leave':
-          this.leaveRoom(this.currentRoomId)
-          break
-      }
-    },
-    handleClick(e) {
-      e.stopPropagation()
-    },
+    // handleClick(e) {
+    //   e.stopPropagation()
+    // },
     initChat() {
       this.socket = this.$socketIo(this.$conf.socketIoUrl, {
         // path: '/chat/',
@@ -105,24 +64,14 @@ export default {
         console.log('socket enter_room')
         this.$refs.roomDialog.fetchRoomMessages()
       })
+      this.socket.on('leave_room', () => {
+        console.log('socket leave_room')
+        this.initStore(`${this.$conf.apiVersion}/auth/login`)
+      })
       this.socket.on('error', (err) => {
         console.log(err.code)
         console.log(err.msg)
       })
-    },
-    enterRoom(key, keyPath) {
-      console.log(key, keyPath)
-      this.socket.emit('enter_room', {
-        r_id: this.rooms[key].r_id,
-      })
-      this.updateCurrentRoomId(this.rooms[key].r_id)
-      console.log(`${this.user.nickname}进入房间：${this.rooms[key].name}`)
-    },
-    leaveRoom(rId) {
-      this.socket.emit('leave_room', {
-        r_id: rId,
-      })
-      console.log(`${this.user.nickname}离开房间：${rId}`)
     },
   },
 }
@@ -171,34 +120,15 @@ export default {
   line-height: 320px;
 }
 
-.room-avatar {
-  height: 46px;
-  width: 46px;
-  margin-right: 10px;
-}
-
-.room-tab {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.room-tab__info {
-  /*background: #ff0000;*/
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
 .room-tab__more {
-  background: #37ff00;
+  /*background: #37ff00;*/
 }
 
 .el-dropdown-link {
   cursor: pointer;
   color: #409eff;
 }
+
 .el-icon-arrow-down {
   font-size: 12px;
 }

@@ -1,9 +1,9 @@
 <template>
   <div class="dialog">
-    <div class="dialog-msgs">
+    <div class="dialog__msgs">
       <message v-for="(msg, index) in msgs" :key="index" :msg="msg" />
     </div>
-    <div class="dialog-input">
+    <div class="dialog__input">
       <el-input
         v-model="msgToSend"
         placeholder="要发送的消息"
@@ -19,6 +19,7 @@
 
 <script>
 import Message from '~/components/room/Message'
+
 export default {
   name: 'Dialog',
   components: {
@@ -117,14 +118,14 @@ export default {
   align-items: center;
 }
 
-.dialog-msgs {
+.dialog__msgs {
   border: 1px solid black;
   width: 100%;
   height: calc(100% - 60px);
   margin-bottom: 10px;
 }
 
-.dialog-input {
+.dialog__input {
   border: 1px solid #9a9999;
   display: flex;
   justify-content: space-between;
