@@ -4,6 +4,12 @@
   </div>
 </template>
 
+<script>
+export default {
+  middleware: ['init-auth', 'auth'],
+}
+</script>
+
 <style>
 html {
   font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
@@ -55,5 +61,6 @@ html {
 .icon {
   cursor: pointer;
   font-size: 32px;
+  color: #9ea2a8;
 }
 </style>
