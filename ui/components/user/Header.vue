@@ -1,6 +1,7 @@
 <template>
   <div>
-    <img class="avatar" :src="avatar" />
+    <img class="avatar" :src="user.avatar" />
+    <span>{{ user.username }}</span>
   </div>
 </template>
 
@@ -8,9 +9,9 @@
 export default {
   name: 'Header',
   props: {
-    avatar: {
-      type: String,
-      default: '',
+    user: {
+      type: Object,
+      default: () => {},
     },
   },
 }
@@ -18,8 +19,8 @@ export default {
 
 <style scoped>
 .avatar {
-  height: 30px;
-  width: 30px;
+  height: 24px;
+  width: 24px;
   margin-right: 10px;
 }
 </style>

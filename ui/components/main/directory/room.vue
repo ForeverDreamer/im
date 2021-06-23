@@ -44,6 +44,9 @@ export default {
     },
     enterRoom(row, column, event) {
       console.log(row, column, event)
+      this.$ws.emit('enter_room', {
+        r_id: row.r_id,
+      })
     },
   },
 }

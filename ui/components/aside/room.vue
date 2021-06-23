@@ -1,46 +1,62 @@
 <template>
   <div>
     <div v-if="user" class="navigation">
-      <user-header :avatar="user.avatar"></user-header>
+      <user-header :user="user"></user-header>
       <div>
         <i class="el-icon-s-home icon" @click="home"></i>
         <i class="el-icon-search icon" @click="spotlight"></i>
         <i class="el-icon-folder icon" @click="directory"></i>
+        <!--        <i class="el-icon-s-home icon" @click="createRoom"></i>-->
       </div>
     </div>
-    <room-aside-menu :socket="socket" />
+    <room-aside-menu />
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import RoomAsideMenu from '~/components/room/AsideMenu'
 
 export default {
   name: 'Aside',
-  props: {
-    socket: {
-      type: Object,
-      default: null,
-    },
+  components: {
+    RoomAsideMenu,
   },
   computed: {
     ...mapGetters({
-      user: 'home/user',
+      user: 'auth/user',
     }),
   },
   methods: {
     home() {
       console.log('进入首页')
+      this.$router.push('/home')
     },
     spotlight() {
       console.log('进入搜索')
     },
     directory() {
       console.log('进入目录')
+      this.$router.push('/directory')
+      // this.$axios
+      //   .$get(`${this.$conf.apiVersion}/room/`)
+      //   .then((response) => {
+      //     console.log(response.data)
+      //   })
+      //   .catch((error) => {
+      //     console.log(error.response.data)
+      //   })
+    },
+    createRoom() {
       this.$axios
-        .$get(`${this.$conf.apiVersion}/room/`)
+        .$post(`${this.$config.apiVersion}/room/`, {
+          name: 'GENERAL',
+          r_type: 'c',
+          description: '默认房间',
+        })
         .then((response) => {
-          console.log(response.data)
+          console.log(response.data.msg)
+          console.log(response.data.room)
         })
         .catch((error) => {
           console.log(error.response.data)

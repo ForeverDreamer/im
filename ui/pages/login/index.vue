@@ -30,7 +30,7 @@
             type="primary"
             size="medium"
             :loading="loading"
-            @click.prevent="login()"
+            @click.prevent="tryLogin"
           >
             {{ loading ? '登录中...' : '立即登录' }}
           </el-button>
@@ -41,6 +41,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 const apiVersion = '/v1'
 
 export default {
@@ -76,7 +77,10 @@ export default {
     }
   },
   methods: {
-    login() {
+    ...mapActions({
+      login: 'auth/login',
+    }),
+    tryLogin() {
       // this.$refs['loginForm'].validate((valid) => {
       this.$refs.loginForm.validate((valid) => {
         if (!valid) {
@@ -84,21 +88,26 @@ export default {
           this.loading = false
           return
         }
-        this.$axios
-          .$post(`${apiVersion}/auth/login`, {
-            login_type: 'account',
-            arguments: {
-              username: this.loginForm.username,
-              password: this.loginForm.password,
-            },
-          })
-          .then((response) => {
-            console.log(response.data.user)
-            this.$router.push('/home/')
-          })
-          .catch((error) => {
-            console.log(error.response.data)
-          })
+        this.login({
+          url: `${apiVersion}/auth/login`,
+          username: this.loginForm.username,
+          password: this.loginForm.password,
+        }).then(() => this.$router.push('/home'))
+        // this.$axios
+        //   .$post(`${apiVersion}/auth/login`, {
+        //     login_type: 'account',
+        //     arguments: {
+        //       username: this.loginForm.username,
+        //       password: this.loginForm.password,
+        //     },
+        //   })
+        //   .then((response) => {
+        //     console.log(response.data.user)
+        //     this.$router.push('/home')
+        //   })
+        //   .catch((error) => {
+        //     console.log(error.response.data)
+        //   })
       })
     },
   },

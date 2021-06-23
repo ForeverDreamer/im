@@ -1,6 +1,6 @@
 export const state = () => ({
   authenticated: false,
-  socket: null,
+  // socket: null,
   user: null,
   rooms: [],
   currentRoomId: '',
@@ -33,12 +33,13 @@ export const getters = {
 export const mutations = {
   init(state, data) {
     // state = data
-    state.authenticated = true
-    state.socket = data.socket
+    // state.socket = data.socket
+    console.log('data', data)
+    sessionStorage.setItem('authState', JSON.stringify(data))
     state.user = data.user
     state.rooms = data.rooms
-    state.currentRoomId = data.user.currentRoomId
-    console.log(state)
+    state.currentRoomId = data.user.current_r_id
+    state.authenticated = true
   },
   updateUser(state, user) {
     Object.assign(state.user, user)
@@ -49,12 +50,12 @@ export const mutations = {
   updateCurrentRoomId(state, currentRoomId) {
     state.currentRoomId = currentRoomId
   },
-  cacheState(state) {
-    sessionStorage.setItem('authState', state)
-  },
+  // cacheState(state) {
+  //   sessionStorage.setItem('authState', state)
+  // },
   clear(state) {
     state.authenticated = false
-    state.socket = null
+    // state.socket = null
     state.user = null
     state.rooms = []
     state.currentRoomId = ''
@@ -63,38 +64,43 @@ export const mutations = {
 }
 
 export const actions = {
-  login({ getters, commit }, authData) {
+  login({ getters }, authData) {
     if (getters.isAuthenticated) {
-      console.log('getters.isAuthenticated')
+      console.log('auth.actions.login： isAuthenticated is true')
       return
     }
     return this.$axios
-      .$post('/account/passwordlogin/', {
-        username: authData.username,
-        password: authData.password,
+      .$post(authData.url, {
+        login_type: 'account',
+        arguments: {
+          username: authData.username,
+          password: authData.password,
+        },
       })
       .then((response) => {
-        console.log(response)
-        const token = response.data.token
-        commit('cacheState', token)
+        // sessionStorage.setItem('authState', JSON.stringify(response.data))
+        console.log('auth.actions.login', response.data)
       })
       .catch((e) => console.log('login => ' + e))
   },
-  initAuth(vuexContext, apiVersion) {
-    let data = localStorage.getItem('authState')
-    if (!data) {
-      this.$axios
-        .$get(`${apiVersion}/auth/login`)
-        .then((response) => {
-          data = response.data
-        })
-        .catch((error) => {
-          console.log(error.response.data)
-        })
+  initAuth({ commit }, apiVersion) {
+    // console.log(vuexContext)
+    const data = sessionStorage.getItem('authState')
+    if (data) {
+      // commit('clear')
+      commit('init', JSON.parse(data))
+      return
     }
-    vuexContext.commit('init', data)
+    this.$axios
+      .$get(`${apiVersion}/auth/login`)
+      .then((response) => {
+        commit('init', response.data)
+      })
+      .catch((error) => {
+        console.log(error.response.data)
+      })
   },
-  logout(vuexContext) {
-    vuexContext.commit('clear')
+  logout({ commit }) {
+    commit('clear')
   },
 }

@@ -41,7 +41,6 @@ class Login(Resource):
                 'msg': '用户已登录',
                 'user': format_user_info(current_user.info),
                 'rooms': get_rooms(current_user.info['rooms']),
-                'current_r_id': '4f62e24a-459e-432a-b3b1-dbc5f48ef8e8',
             }
         else:
             raise Unauthorized('用户未登录')

@@ -1,10 +1,17 @@
 <template>
-  <div>聊天</div>
+  <div>
+    <room-dialog />
+  </div>
 </template>
 
 <script>
+import RoomDialog from '~/components/room/Dialog'
+
 export default {
   name: 'Chat',
+  components: {
+    RoomDialog,
+  },
 }
 </script>
 

@@ -23,10 +23,10 @@ import { mapGetters, mapMutations } from 'vuex'
 export default {
   name: 'AsideMenu',
   props: {
-    socket: {
-      type: Object,
-      default: null,
-    },
+    // socket: {
+    //   type: Object,
+    //   default: null,
+    // },
     // rooms: {
     //   type: Array,
     //   default: () => [],
@@ -35,30 +35,32 @@ export default {
   computed: {
     // mix the getters into computed with object spread operator
     ...mapGetters({
-      rooms: 'home/rooms',
-      currentRoomId: 'home/currentRoomId',
-      activeRoomIdx: 'home/activeRoomIdx',
+      rooms: 'auth/rooms',
+      currentRoomId: 'auth/currentRoomId',
+      activeRoomIdx: 'auth/activeRoomIdx',
     }),
   },
   methods: {
     ...mapMutations({
-      updateCurrentRoomId: 'home/updateCurrentRoomId',
+      updateCurrentRoomId: 'auth/updateCurrentRoomId',
     }),
     enterRoom(key, keyPath) {
       console.log(key, keyPath)
-      this.socket.emit('enter_room', {
+      this.$ws.emit('enter_room', {
         r_id: this.rooms[key].r_id,
       })
       this.updateCurrentRoomId(this.rooms[key].r_id)
     },
     leaveRoom(rId) {
-      this.socket.emit('leave_room', {
+      console.log(rId)
+      this.$ws.emit('leave_room', {
         r_id: rId,
       })
     },
     handleCommand(cmd) {
       switch (cmd) {
         case 'leave':
+          console.log(this.currentRoomId)
           this.leaveRoom(this.currentRoomId)
           break
       }
@@ -75,14 +77,23 @@ export default {
 }
 
 .room-tab {
+  background: #2f343d;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
+  /*margin-bottom: 10px;*/
+  cursor: pointer;
+}
+
+.room-tab:hover,
+.room-tab:active,
+.room-tab__info:hover,
+.room-tab__info:active {
+  background: #1f2329;
 }
 
 .room-tab__info {
-  /*background: #ff0000;*/
+  color: #81858b;
   display: flex;
   justify-content: space-between;
   align-items: center;

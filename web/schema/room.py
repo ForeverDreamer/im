@@ -16,8 +16,8 @@ class QueryRoomSchema(Schema):
             data['_id'] = data.pop('r_id')
             return {'room': format_room_info(db_find_room(data))}
         else:
-            data['owner'] = current_user.info['username']
-            return {'rooms': [format_room_info(room) for room in db_find_room(data, many=True)]}
+            # data['owner'] = current_user.info['username']
+            return {'rooms': [format_room_info(room) for room in db_find_room({}, many=True)]}
 
 
 class CreateRoomSchema(Schema):

@@ -18,6 +18,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 import Message from '~/components/room/Message'
 
 export default {
@@ -25,26 +27,13 @@ export default {
   components: {
     Message,
   },
-  props: {
-    socket: {
-      type: Object,
-      default: null,
-    },
-    rId: {
-      type: String,
-      default: '',
-    },
-    // msgToSend: {
-    //   type: String,
-    //   default: '',
-    // },
+  created() {
+    this.fetchRoomMessages()
+    this.$ws.on('enter_room', () => {
+      console.log('socket enter_room')
+      this.fetchRoomMessages()
+    })
   },
-  // created() {
-  //   this.socket.on('enter_room', () => {
-  //     console.log('socket enter_room')
-  //     this.fetchRoomMessages()
-  //   })
-  // },
   data() {
     return {
       msgToSend: '',
@@ -52,6 +41,9 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({
+      rId: 'auth/currentRoomId',
+    }),
     formatedMsgs() {
       if (!this.msgs) {
         return ''
@@ -74,13 +66,13 @@ export default {
         return
       }
       console.log('发送用户消息：' + msg)
-      this.socket.emit('msg', {
+      this.$ws.emit('msg', {
         r_id: this.rId,
         msg: this.msgToSend,
       })
       if (this.msgToSend.startsWith('@bot ')) {
         console.log('发送bot消息：' + msg)
-        this.socket.emit('msg_bot', {
+        this.$ws.emit('msg_bot', {
           r_id: this.rId,
           msg: this.msgToSend,
         })

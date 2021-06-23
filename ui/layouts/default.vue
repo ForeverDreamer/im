@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  middleware: ['init-auth', 'auth'],
+  middleware: ['init-auth'],
 }
 </script>
 
@@ -58,9 +58,51 @@ html {
 /*  color: #fff;*/
 /*}*/
 
+.el-header,
+.el-footer {
+  background-color: #b3c0d1;
+  color: #333;
+  text-align: center;
+  line-height: 60px;
+}
+
+.el-aside {
+  background-color: #2f343d;
+  color: #333;
+  text-align: center;
+  /*line-height: 200px;*/
+}
+
+.el-main {
+  background-color: #f2f3f5;
+  color: #333;
+  text-align: center;
+  /*line-height: 160px;*/
+  position: relative;
+  padding: 0;
+}
+
+.el-container {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding-right: 10px;
+}
+
+.el-container:nth-child(5) .el-aside,
+.el-container:nth-child(6) .el-aside {
+  line-height: 260px;
+}
+
+.el-container:nth-child(7) .el-aside {
+  line-height: 320px;
+}
+
 .icon {
   cursor: pointer;
-  font-size: 32px;
+  font-size: 20px;
   color: #9ea2a8;
 }
 </style>
