@@ -14,7 +14,8 @@ export default {
 html {
   font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
     Roboto, 'Helvetica Neue', Arial, sans-serif;
-  font-size: 16px;
+  /*font-size: 16px;*/
+  /*font-size: 100%;*/
   word-spacing: 1px;
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
@@ -104,5 +105,54 @@ html {
   cursor: pointer;
   font-size: 20px;
   color: #9ea2a8;
+}
+
+.main-window {
+  border: 1px solid red;
+  /*padding: 1rem;*/
+  height: 100vh;
+  display: flex;
+  font-size: 1rem;
+}
+
+.main-window__aside {
+  background: #2f343d;
+  width: 20%;
+  /*margin-right: 1rem;*/
+}
+
+.main-window__content {
+  background: #f7f8fa;
+  width: 80%;
+}
+
+@media (max-width: 1400px) {
+  .my-class {
+    width: 90%;
+  }
+}
+
+@media (max-width: 1200px) {
+  .my-class {
+    width: 80%;
+  }
+}
+
+@media (max-width: 992px) {
+  .my-class {
+    width: 70%;
+  }
+}
+
+@media (max-width: 768px) {
+  .my-class {
+    width: 60%;
+  }
+}
+
+@media (max-width: 576px) {
+  .my-class {
+    width: 50%;
+  }
 }
 </style>

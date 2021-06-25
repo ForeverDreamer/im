@@ -1,12 +1,18 @@
 <template>
-  <el-container>
-    <el-aside width="400px">
-      <aside-room />
-    </el-aside>
-    <el-main>
-      <main-chat ref="roomDialog" />
-    </el-main>
-  </el-container>
+  <div class="main-window">
+    <aside-room class="main-window__aside" />
+    <main-chat ref="roomDialog" class="main-window__content" />
+    <!--    <div class="main-window__aside"></div>-->
+    <!--    <div class="main-window__content"></div>-->
+  </div>
+  <!--  <el-container>-->
+  <!--    <el-aside width="400px">-->
+  <!--      <aside-room />-->
+  <!--    </el-aside>-->
+  <!--    <el-main>-->
+  <!--      <main-chat ref="roomDialog" />-->
+  <!--    </el-main>-->
+  <!--  </el-container>-->
 </template>
 
 <script>

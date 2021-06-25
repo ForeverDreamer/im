@@ -100,8 +100,8 @@ export default {
 
 <style scoped>
 .dialog {
-  position: absolute;
-  border: 1px solid black;
+  /*position: absolute;*/
+  /*border: 1px solid black;*/
   height: 100%;
   width: 100%;
   display: flex;

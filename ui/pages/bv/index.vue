@@ -15,17 +15,23 @@ export default {
 <style scoped>
 .main-window {
   border: 1px solid red;
+  padding: 1rem;
   height: 100vh;
   display: flex;
+  font-size: 1rem;
 }
+
 .main-window__aside {
   background: gray;
   width: 20%;
+  margin-right: 1rem;
 }
+
 .main-window__content {
   background: black;
   width: 80%;
 }
+
 .my-class {
   width: 100%;
   max-width: 100%;
