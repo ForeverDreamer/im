@@ -43,6 +43,10 @@ export default {
     '@gauseen/nuxt-proxy',
   ],
 
+  bootstrapVue: {
+    icons: true,
+  },
+
   proxyTable: {
     '/backend': {
       // 请求服务器地址

@@ -10,6 +10,11 @@ from web.config import conf
 app = Flask(__name__)
 app.config.from_mapping(conf['dev'])
 # CORS(app)
+# import sys
+# sys.path.append('/data/im')
+init_restapi(app)
+init_auth(app)
+init_mongodb(app)
 
 
 @app.route('/home')
@@ -23,11 +28,6 @@ def index():
 
 
 if __name__ == '__main__':
-    # import sys
-    # sys.path.append('/data/im')
-    init_restapi(app)
-    init_auth(app)
-    init_mongodb(app)
     socketio = init_websocket(app)
     socketio.run(app, host='0.0.0.0', port=5000)
 #
