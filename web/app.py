@@ -4,7 +4,6 @@ from flask import Flask, render_template, redirect
 from web.extension.auth import init_auth
 from web.extension.restapi import init_restapi
 from db.mongodb import init_mongodb
-from chat import init_websocket
 from web.config import conf
 
 app = Flask(__name__)
@@ -27,9 +26,10 @@ def index():
     return redirect('/home')
 
 
-if __name__ == '__main__':
-    socketio = init_websocket(app)
-    socketio.run(app, host='0.0.0.0', port=5000)
-#
 # if __name__ == '__main__':
-#     app.run(host='0.0.0.0', port=5000, debug=True, threaded=True)
+#     from chat import init_websocket
+#     socketio = init_websocket(app)
+#     socketio.run(app, host='0.0.0.0', port=5000)
+#
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000, debug=True, use_evalex=True, threaded=True)
